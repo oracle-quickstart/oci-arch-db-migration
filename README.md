@@ -1,28 +1,29 @@
-# oci-quickstart-template
+# oci-arch-db-migration
 
-The [Oracle Cloud Infrastructure (OCI) Quick Start](https://github.com/oracle-quickstart?q=oci-quickstart) is a collection of examples that allow Oracle Cloud Infrastructure users to get a quick start deploying advanced infrastructure on OCI.
-
-The oci-quickstart-template repository contains the template that can be used for accelerating the construction of quickstarts that runs from local Terraform CLI, [OCI Resource Manager](https://docs.cloud.oracle.com/en-us/iaas/Content/ResourceManager/Concepts/resourcemanager.htm) and [OCI Cloud Shell](https://docs.cloud.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm).
-
-Simple is a sample application that deploys a standalone virtual machine from the Oracle Cloud Infrastructure Marketplace.
-
-This repo is under active development.  Building open source software is a community effort.  We're excited to engage with the community building this.
+This repository stores a variety of examples demonstrating how to provision the infrastructure needed for 4 Database Migration use cases.
 
 ## How this project is organized
 
-Each application is stored on its own top level folder.
+The terraform code for each Database Migration use case is stored in a separate folder.
 
-Within the simple application project there are 3 modules:
+The folders are organized as follows:
 
-- [simple-cli](simple-cli): launch a simple VM that subscribes to a Marketplace Image running from Terraform CLI.
-- [simple-orm](simple-orm): Responsible for packaging the simple-cli module in OCI [Resource Manager Stack](https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Tasks/managingstacksandjobs.htm) format.
-- [terraform-modules](terraform-modules): contains a list of re-usable terraform modules for managing infrastructure resources like vcn, subnets, security, etc.
+- [oci-arch-ee-atp-db-mig](oci-arch-ee-atp-db-mig): launch the VCN, a compute instance and an Autonomous Transaction Processing database.
+- [oci-arch-ee-bm-db-mig](oci-arch-ee-bm-db-mig): launch the VCN, a compute instance and a Bare Metal Database System.
+- [oci-arch-ee-exa-db-mig](oci-arch-ee-exa-db-mig): launch the VCN, a compute instance and a Exadata Cloud Service Database System.
+- [oci-arch-ee-vm-db-mig](oci-arch-ee-vm-db-mig): launch the VCN, a compute instance and a Virtual Machine Database System.
 
 ## Prerequisites
 
 First off we'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/oracle/oci-quickstart-prerequisites).
 
-## Deploying Simple
+## License
 
-Detailed instructions for deploying Simple on Oracle Cloud Infrastructure can be found in the [simple](./simple/README.md) space.
+You may not use the identified files except in compliance with the Apache License, Version 2.0 (the "License.")
+
+You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. A copy of the license is also reproduced in LICENSE.md
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and limitations under the License.
 
