@@ -1,4 +1,4 @@
-# oci-arch-ee-vm-db-mig
+# oci-arch-se-vm-db-mig
 
 This code will help you deploy a compute instance and a Virtual Machine (VM) database system in Oracle Cloud Infrastructure.
 
