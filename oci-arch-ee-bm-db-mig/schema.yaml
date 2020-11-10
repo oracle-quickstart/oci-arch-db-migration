@@ -133,7 +133,7 @@
       db_system_shape:
         type: string
         required: false
-        default: "VM.Standard2.4"
+        default: "BM.DenseIO2.52"
         description: "DB System Shape"
       
       db_system_cpu_core_count:
