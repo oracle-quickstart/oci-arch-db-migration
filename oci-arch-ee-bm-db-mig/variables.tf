@@ -8,23 +8,20 @@ variable "tenancy_ocid" {
 variable "compartment_ocid" {
 }
 
-variable "user_ocid" {
-}
+variable "user_ocid" {}
 
-variable "fingerprint" {
-}
+variable "fingerprint" {}
 
-variable "private_key_path" {
-}
+variable "private_key_path" {}
 
 variable "region" {
 }
 
-variable "ssh_public_key" {
-}
+#variable "ssh_public_key" {
+#}
 
-variable "ssh_private_key" {
-}
+#variable "ssh_private_key" {
+#}
 
 # Specify any Default Value's here
 
@@ -49,7 +46,7 @@ variable "instance_os" {
 
 variable "linux_os_version" {
   description = "Operating system version for all Linux instances"
-  default     = "7.7"
+  default     = "7.8"
 }
 
 variable "instance_shape" {
@@ -59,7 +56,7 @@ variable "instance_shape" {
 
 
 variable "volume_display_name" {
-   default="AppVolume1"
+   default = "AppVolume1"
 }
 
 variable "volume_size_in_gbs" {
