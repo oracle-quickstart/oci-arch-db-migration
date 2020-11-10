@@ -33,6 +33,7 @@
       - volume_count
       - volume_attachment_type
       - db_system_shape
+      - db_system_cpu_core_count
       - db_edition
       - db_name
       - db_version
@@ -134,6 +135,12 @@
         required: false
         default: "VM.Standard2.4"
         description: "DB System Shape"
+      
+      db_system_cpu_core_count:
+        type: string
+        required: false
+        default: "2"
+        description: "DB System CPU count core."
 
       db_edition:
         type: string
