@@ -28,10 +28,6 @@
       - instance_os
       - linux_os_version
       - instance_shape
-      - volume_display_name
-      - volume_size_in_gbs
-      - volume_count
-      - volume_attachment_type
       - db_system_shape
       - db_system_cpu_core_count
       - db_edition
@@ -40,7 +36,6 @@
       - db_home_display_name
       - db_disk_redundancy
       - db_system_display_name
-      - db_cluster_name
       - hostname
       - host_user_name
       - n_character_set
@@ -107,34 +102,10 @@
         default: "VM.Standard2.4"
         description: "Instance Shape."
 
-      volume_display_name:
-        type: string
-        required: false
-        default: "AppVolume1"
-        description: "Instance volume display name."
-
-      volume_size_in_gbs:
-        type: string
-        required: false
-        default: "100"
-        description: "Instance volume size in gigabytes."
-
-      volume_count:
-        type: number
-        required: false
-        default: 1
-        description: "Instance volume count" 
-
-      volume_attachment_type:
-        type: string
-        required: false
-        default: "paravirtualized"
-        description: "Instance volume attachment type."
-      
       db_system_shape:
         type: string
         required: false
-        default: "Exadata.Quarter2.92"
+        default: "BM.DenseIO2.52"
         description: "DB System Shape"
       
       db_system_cpu_core_count:
@@ -146,7 +117,7 @@
       db_edition:
         type: string
         required: false
-        default: "ENTERPRISE_EDITION_EXTREME_PERFORMANCE"
+        default: "ENTERPRISE_EDITION"
         description: "DB Edition"
 
       db_name:
@@ -178,12 +149,6 @@
         required: false
         default: "MyTFDBSystem"
         description: "DB System display name." 
-
-      db_cluster_name:
-        type: string
-        required: false
-        default: "TestCluster"
-        description: "DB cluster name."
 
       hostname:
         type: string

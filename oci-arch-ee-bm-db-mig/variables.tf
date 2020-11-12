@@ -54,7 +54,6 @@ variable "instance_shape" {
   default     = "VM.Standard2.4"
 }
 
-
 variable "volume_display_name" {
    default = "AppVolume1"
 }
@@ -69,7 +68,8 @@ variable "volume_count" {
 
 variable "volume_attachment_type" {
   default = "paravirtualized"
-  }
+}
+
 variable "db_system_shape" {
   default = "BM.DenseIO2.52"
 }
