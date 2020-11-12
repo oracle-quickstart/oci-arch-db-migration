@@ -27,7 +27,7 @@ resource "oci_database_db_system" "test_db_system1" {
 
   shape                   = var.db_system_shape
   subnet_id               = oci_core_subnet.subnet_2.id
-  ssh_public_keys         = [chomp(file(var.ssh_public_key))]
+  ssh_public_keys         = [tls_private_key.public_private_key_pair.public_key_openssh]
   hostname                = var.hostname
 }
 

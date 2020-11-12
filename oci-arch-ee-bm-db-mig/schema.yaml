@@ -1,0 +1,264 @@
+## Copyright © 2020, Oracle and/or its affiliates. 
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
+    title: "Create compute instance and a Bare Metal (BM) database system in Oracle Cloud Infrastructure"
+    stackDescription: "This code will help you deploy a compute instance and a Bare Metal (BM) database system in Oracle Cloud"
+    schemaVersion: 1.1.0
+    version: "20190404"
+    locale: "en"
+
+    variableGroups:
+    - title: General Configuration
+      visible: false
+      variables:
+      - tenancy_ocid
+
+    - title: Required Configuration
+      visible: true  
+      variables:
+      - db_admin_password
+      - compartment_ocid
+      - region
+
+    - title: Optional Configuration
+      visible: true
+      variables:      
+      - ad_number
+      - ad_name
+      - instance_os
+      - linux_os_version
+      - instance_shape
+      - volume_display_name
+      - volume_size_in_gbs
+      - volume_count
+      - volume_attachment_type
+      - db_system_shape
+      - db_system_cpu_core_count
+      - db_edition
+      - db_name
+      - db_version
+      - db_home_display_name
+      - db_disk_redundancy
+      - db_system_display_name
+      - hostname
+      - host_user_name
+      - n_character_set
+      - character_set
+      - db_workload
+      - pdb_name
+      - data_storage_size_in_gb
+      - license_model
+      - node_count
+      - data_storage_percentage
+      - db_auto_backup_enabled
+      - db_auto_backup_window
+      - db_recovery_window_in_days
+    
+    variables:
+
+      compartment_ocid:
+        type: oci:identity:compartment:id
+        required: true
+        visibile: true
+        title: Compartment
+        description: "Compartment where you want to create the solution resources"
+
+      region:
+        type: oci:identity:region:name
+        required: true
+        visibile: true
+        title: Region
+        description: "Region where you want to deploy the resources defined by this stack."
+
+      db_admin_password:
+        type: password
+        required: true
+        title: "Database Admin password"
+        description: "Database Admin password."
+
+      # Optional Configuration
+      ad_number: 
+        type: number
+        required: false
+        default: 0
+        description: "Which availability domain to deploy to depending on quota, zero based."
+      
+      ad_name: 
+        type: oci:identity:availabilitydomain:name
+        required: false
+        description: "Which Availability domain name to deploy."
+
+      instance_os: 
+        type: string
+        required: false
+        default: "Oracle Linux"
+        description: "Operating system for compute instances."
+
+      linux_os_version:
+        type: string
+        required: false
+        default: "7.8"
+        description: "Operating system version for all Linux instances."
+
+      instance_shape:
+        type: string
+        required: false
+        default: "VM.Standard2.4"
+        description: "Instance Shape."
+
+      volume_display_name:
+        type: string
+        required: false
+        default: "AppVolume1"
+        description: "Instance volume display name."
+
+      volume_size_in_gbs:
+        type: string
+        required: false
+        default: "100"
+        description: "Instance volume size in gigabytes."
+
+      volume_count:
+        type: number
+        required: false
+        default: 1
+        description: "Instance volume count" 
+
+      volume_attachment_type:
+        type: string
+        required: false
+        default: "paravirtualized"
+        description: "Instance volume attachment type."
+      
+      db_system_shape:
+        type: string
+        required: false
+        default: "BM.DenseIO2.52"
+        description: "DB System Shape"
+      
+      db_system_cpu_core_count:
+        type: string
+        required: false
+        default: "2"
+        description: "DB System CPU count core."
+
+      db_edition:
+        type: string
+        required: false
+        default: "ENTERPRISE_EDITION"
+        description: "DB Edition"
+
+      db_name:
+        type: string
+        required: false
+        default: "aTFdb"
+        description: "Database display name."
+
+      db_version:
+        type: string
+        required: false
+        default: "12.2.0.1"
+        description: "Database version."
+
+      db_home_display_name:
+        type: string
+        required: false
+        default: "MyTFDBHome"
+        description: "Database home display name."  
+
+      db_disk_redundancy:
+        type: string
+        required: false
+        default: "HIGH"
+        description: "Database disk redundancy."      
+
+      db_system_display_name:
+        type: string
+        required: false
+        default: "MyTFDBSystem"
+        description: "DB System display name." 
+
+      hostname:
+        type: string
+        required: false
+        default: "myoracledb"
+        description: "DB hostname" 
+
+      host_user_name:
+        type: string
+        required: false
+        default: "opc"
+        description: "DB host user name" 
+
+      n_character_set:
+        type: string
+        required: false
+        default: "AL16UTF16"
+        description: "Database NCharacter set"    
+
+      character_set:
+        type: string
+        required: false
+        default: "AL32UTF8"
+        description: "Database Character set"
+
+      db_workload:
+        type: string
+        required: false
+        default: "OLTP"
+        description: "Database workload"
+
+      pdb_name:
+        type: string
+        required: false
+        default: "pdbName"
+        description: "PDB name"
+
+      data_storage_size_in_gb:
+        type: string
+        required: false
+        default: "256"
+        description: "Database storage size in GB."
+
+      license_model:
+        type: string
+        required: false
+        default: "LICENSE_INCLUDED"
+        description: "Database license model"
+
+      node_count:
+        type: string
+        required: false
+        default: "1"
+        description: "Database node count"
+
+      data_storage_percentage:
+        type: string
+        required: false
+        default: "40"
+        description: "Database Storage percentage"        
+
+      db_auto_backup_enabled:
+        type: string
+        required: false
+        default: "true"
+        description: "Database Autobackup enabled"
+
+      db_auto_backup_window:
+        type: string
+        required: false
+        default: "SLOT_TWO"
+        description: "Database Autobackup window"
+
+      db_recovery_window_in_days:
+        type: string
+        required: false
+        default: "45"
+        description: "Database Recovery window in days"
+
+    outputs:
+      generated_ssh_private_key:
+        title: "Generated SSH Private Key"
+        displayText: "Generated SSH Private Key"
+        type: string
+        visible: true
