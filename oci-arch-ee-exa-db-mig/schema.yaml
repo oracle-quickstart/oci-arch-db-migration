@@ -36,6 +36,7 @@
       - db_home_display_name
       - db_disk_redundancy
       - db_system_display_name
+      - db_cluster_name
       - hostname
       - host_user_name
       - n_character_set
@@ -105,7 +106,7 @@
       db_system_shape:
         type: string
         required: false
-        default: "BM.DenseIO2.52"
+        default: "Exadata.Quarter2.92"
         description: "DB System Shape"
       
       db_system_cpu_core_count:
@@ -117,7 +118,7 @@
       db_edition:
         type: string
         required: false
-        default: "ENTERPRISE_EDITION"
+        default: "ENTERPRISE_EDITION_EXTREME_PERFORMANCE"
         description: "DB Edition"
 
       db_name:
@@ -149,6 +150,12 @@
         required: false
         default: "MyTFDBSystem"
         description: "DB System display name." 
+
+      db_cluster_name:
+        type: string
+        required: false
+        default: "TestCluster"
+        description: "DB cluster name."
 
       hostname:
         type: string
