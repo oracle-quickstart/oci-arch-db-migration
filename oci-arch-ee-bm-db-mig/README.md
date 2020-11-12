@@ -2,6 +2,8 @@
 
 This code will help you deploy a compute instance and a Bare Metal (BM) database system in Oracle Cloud Infrastructure.
 
+For details of the architecture, see [_Migrate an on-premises Oracle Database deployment to a bare metal DB system_](https://docs.oracle.com/en/solutions/migrate-bmdb/index.html)
+
 ## How this project is organized
 
 The terraform code will deploy a VCN, a 4 OCPU compute instance in a private subnet and a BM database system in a separate private subnet.
@@ -80,13 +82,6 @@ When you no longer need the deployment, you can run this command to destroy the 
 
     terraform destroy
 
-## License
+## Architecture Diagram
 
-You may not use the identified files except in compliance with the Apache License, Version 2.0 (the "License.")
-
-You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. A copy of the license is also reproduced in LICENSE.md
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
-See the License for the specific language governing permissions and limitations under the License.
-
+![](./images/oci-arch-ee-bm-db-mig.png)
