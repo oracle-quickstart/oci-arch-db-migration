@@ -11,7 +11,7 @@ The folders are organized as follows:
 - [oci-arch-ee-atp-db-mig](oci-arch-ee-atp-db-mig): launch the VCN, a compute instance and an Autonomous Transaction Processing database.
 - [oci-arch-ee-bm-db-mig](oci-arch-ee-bm-db-mig): launch the VCN, a compute instance and a Bare Metal Database System.
 - [oci-arch-ee-exa-db-mig](oci-arch-ee-exa-db-mig): launch the VCN, a compute instance and a Exadata Cloud Service Database System.
-- [oci-arch-ee-vm-db-mig](oci-arch-se-vm-db-mig): launch the VCN, a compute instance and a Virtual Machine Database System.
+- [oci-arch-se-vm-db-mig](oci-arch-se-vm-db-mig): launch the VCN, a compute instance and a Virtual Machine Database System.
 
 ## Prerequisites
 
