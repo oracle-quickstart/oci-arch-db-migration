@@ -49,20 +49,20 @@
         required: true
         visibile: true
         title: Compartment
-        description: "Compartment where you want to create the solution resources"
+        description: "Choose Compartment where you want to create the solution resources"
 
       region:
         type: oci:identity:region:name
         required: true
         visibile: true
         title: Region
-        description: "Region where you want to deploy the resources defined by this stack."
+        description: "Choose Region where you want to deploy the resources defined by this stack."
 
       autonomous_database_admin_password:
         type: password
         required: true
-        title: "Autonomous database Admin password"
-        description: "Autonomous database Admin password."
+        title: "Autonomous Database Admin password"
+        description: "Type password for admin user in Autonomous Database."
         minLength: 12
         maxLength: 30
         pattern: ^[A-Za-z][A-Za-z0-9_#\$]+$ 
@@ -71,13 +71,13 @@
       ad_number: 
         type: number
         required: false
-        visible: true
-        description: "Which availability domain to deploy to depending on quota, zero based."
+        visible: false
       
       ad_name: 
         type: oci:identity:availabilitydomain:name
         required: false
-        description: "Which Availability domain name to deploy."
+        title: "Availability Domain"
+        description: "Choose Availability Domain where you want to deploy your solution resources."
         dependsOn:
           compartmentId: ${compartment_ocid}
 
@@ -85,7 +85,8 @@
         type: enum
         required: false
         default: "Oracle Linux"
-        description: "Operating system for compute instances."
+        title: "Operating system"
+        description: "Choose Operating System for your compute instances."
         enum:
           - "Oracle Linux"
 
@@ -93,7 +94,8 @@
         type: enum
         required: false
         default: "7.8"
-        description: "Operating system version for all Linux instances."
+        title: "Operating system version"
+        description: "Choose Operating System version for your compute instances."
         enum:
           - "7.8"
 
@@ -101,7 +103,8 @@
         type: oci:core:instanceshape:name
         required: false
         default: "VM.Standard2.4"
-        description: "Instance Shape."
+        title: "Instance Shape"
+        description: "Choose instance shape for your compute instances."
         dependsOn:
           compartmentId: ${compartment_ocid}
 
@@ -109,7 +112,8 @@
         type: string
         required: false
         default: "AppVolume1"
-        description: "Instance volume display name."
+        title: "Instance Volume Display Name"
+        description: "Type instance volume display Name."
 
       volume_size_in_gbs:
         type: number
@@ -118,7 +122,8 @@
         minimum: 50
         maximum: 32000
         multipleOf: 1
-        description: "Instance volume size in gigabytes."
+        title: "Instance Volume Size (GBs)"
+        description: "Choose instance volume size in gigabytes (min 50GB, Max 32TB)."
 
       volume_count:
         type: number
@@ -127,13 +132,15 @@
         minimum: 1
         maximum: 32
         multipleOf: 1
-        description: "Instance volume count" 
+        title: "Instance Volume Count"
+        description: "Choose instance volume count (min 1, max 32)" 
 
       volume_attachment_type:
         type: enum
         required: false
         default: "paravirtualized"
-        description: "Instance volume attachment type."
+        title: "Instance Volume Attachment Type"
+        description: "Choose instance volume attachment type."
         enum:
           - "paravirtualized"
       
@@ -144,25 +151,29 @@
         maximum: 128
         multipleOf: 1
         default: 4
-        description: "Autonomous database CPU core count."
+        title: "Autonomous database CPU core count"
+        description: "Choose autonomous database CPU core count (min 1, max 128)."
 
       autonomous_database_db_name:
         type: string
         required: false
         default: "aTFdb"
-        description: "Autonomous database CPU core count."
+        title: "Autonomous database DB Name"
+        description: "Type autonomous database DB Name."
 
       autonomous_database_display_name:
         type: string
         required: false
         default: "My ATP DB"
-        description: "Autonomous database display name."
+        title: "Autonomous database display name"
+        description: "Type autonomous database display name."
 
       autonomous_database_is_auto_scaling_enabled:
         type: boolean
         required: false
         default: false
-        description: "Autonomous database auto-scaling enabled."
+        title: "Autonomous database auto-scaling enabled."
+        description: "Choose if autonomous database auto-scaling will be enabled."
 
       autonomous_database_data_storage_size_in_tbs:
         type: number
@@ -171,13 +182,15 @@
         maximum: 128
         multipleOf: 1
         default: 1
-        description: "Autonomous database data storage size in terabytes."  
+        title: "Autonomous database Data Storage Size"
+        description: "Choose autonomous database data storage size in terabytes (min 1TB, max 128TB)."  
 
       autonomous_database_db_workload:
         type: enum
         required: false
         default: "OLTP"
-        description: "Autonomous database DB workload."      
+        title: "Autonomous database DB workload"
+        description: "Choose autonomous database DB workload type."      
         enum:
           - "OLTP"
 
@@ -185,7 +198,8 @@
         type: enum
         required: false
         default: "BRING_YOUR_OWN_LICENSE"
-        description: "Autonomous database License Model." 
+        title: "Autonomous database License Model"
+        description: "Choose autonomous database license model." 
         enum:
           - "LICENSE_INCLUDED"
           - "BRING_YOUR_OWN_LICENSE"
@@ -194,7 +208,8 @@
         type: enum
         required: false
         default: "NOT_REGISTERED"
-        description: "Autonomous database DataSafe Status" 
+        title: "Autonomous database DataSafe Status"
+        description: "Choose autonomous database DataSafe status" 
         enum:
           - "NOT_REGISTERED"
 
