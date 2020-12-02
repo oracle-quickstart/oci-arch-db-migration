@@ -71,10 +71,7 @@
       ad_number: 
         type: number
         required: false
-        default: 0
-        minimum: 0
-        maximum: 2
-        multipleOf: 1
+        visible: true
         description: "Which availability domain to deploy to depending on quota, zero based."
       
       ad_name: 
