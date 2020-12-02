@@ -9,25 +9,11 @@ variable "compartment_ocid" {
 }
 
 variable "user_ocid" {}
-
 variable "fingerprint" {}
-
 variable "private_key_path" {}
 
 variable "region" {
 }
-
-#variable "ssh_public_key" {
-#}
-
-#variable "ssh_private_key" {
-#}
-
-# Specify any Default Value's here
-
-#variable "availability_domain" {
-#  default = "3"
-#}
 
 variable "ad_number" {
   default     = 0
