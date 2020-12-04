@@ -232,7 +232,7 @@ variables:
       - "AL32UTF8"
 
   db_workload:
-    type: string
+    type: enum
     required: false
     title: "Database workload"
     description: "Choose Database workload for your Exadata DBSystem." 
@@ -266,7 +266,7 @@ variables:
       - "BRING_YOUR_OWN_LICENSE"
 
   node_count:
-    type: string
+    type: enum
     required: false
     default: 1
     minimum: 1
