@@ -1,347 +1,349 @@
 ## Copyright © 2020, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
-    title: "Create compute instance and a Bare Metal (BM) database system in Oracle Cloud Infrastructure"
-    stackDescription: "This code will help you deploy a compute instance and a Bare Metal (BM) database system in Oracle Cloud"
-    schemaVersion: 1.1.0
-    version: "20190404"
-    locale: "en"
+title: "Create compute instance and a Bare Metal (BM) database system in Oracle Cloud Infrastructure"
+stackDescription: "This code will help you deploy a compute instance and a Bare Metal (BM) database system in Oracle Cloud"
+schemaVersion: 1.1.0
+version: "20190404"
+locale: "en"
 
-    variableGroups:
-    - title: General Configuration
-      visible: false
-      variables:
-      - tenancy_ocid
+variableGroups:
+- title: General Configuration
+  visible: false
+  variables:
+  - tenancy_ocid
 
-    - title: Required Configuration
-      visible: true  
-      variables:
-      - db_admin_password
-      - compartment_ocid
-      - region
+- title: Required Configuration
+  visible: true  
+  variables:
+  - db_admin_password
+  - compartment_ocid
+  - region
 
-    - title: Optional Configuration
-      visible: true
-      variables:      
-      - ad_number
-      - ad_name
-      - instance_os
-      - linux_os_version
-      - instance_shape
-      - volume_display_name
-      - volume_size_in_gbs
-      - volume_count
-      - volume_attachment_type
-      - db_system_shape
-      - db_system_cpu_core_count
-      - db_edition
-      - db_name
-      - db_version
-      - db_home_display_name
-      - db_disk_redundancy
-      - db_system_display_name
-      - hostname
-      - host_user_name
-      - n_character_set
-      - character_set
-      - db_workload
-      - pdb_name
-      - data_storage_size_in_gb
-      - license_model
-      - node_count
-      - data_storage_percentage
-      - db_auto_backup_enabled
-      - db_auto_backup_window
-      - db_recovery_window_in_days
-    
-    variables:
+- title: Optional Configuration
+  visible: true
+  variables:  
+  - ad_number
+  - ad_name
+  - instance_os
+  - linux_os_version
+  - instance_shape
+  - volume_display_name
+  - volume_size_in_gbs
+  - volume_count
+  - volume_attachment_type
+  - db_system_shape
+  - db_system_cpu_core_count
+  - db_edition
+  - db_name
+  - db_version
+  - db_home_display_name
+  - db_disk_redundancy
+  - db_system_display_name
+  - hostname
+  - host_user_name
+  - n_character_set
+  - character_set
+  - db_workload
+  - pdb_name
+  - data_storage_size_in_gb
+  - license_model
+  - node_count
+  - data_storage_percentage
+  - db_auto_backup_enabled
+  - db_auto_backup_window
+  - db_recovery_window_in_days
 
-      compartment_ocid:
-        type: oci:identity:compartment:id
-        required: true
-        visibile: true
-        title: Compartment
-        description: "Compartment where you want to create the solution resources"
+variables:
 
-      region:
-        type: oci:identity:region:name
-        required: true
-        visibile: true
-        title: Region
-        description: "Region where you want to deploy the resources defined by this stack."
+  # General Configuration
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true
+    visibile: true
+    title: Compartment
+    description: "Compartment where you want to create the solution resources"
 
-      db_admin_password:
-        type: password
-        required: true
-        title: "Database Admin password"
-        description: "Type password for admin user in your DB System"
-        minLength: 12
-        maxLength: 30
-        pattern: ^[A-Za-z][A-Za-z0-9_#\$]+$ 
+  region:
+    type: oci:identity:region:name
+    required: true
+    visibile: true
+    title: Region
+    description: "Region where you want to deploy the resources defined by this stack."
 
-      # Optional Configuration
-      ad_number: 
-        type: number
-        required: false
-        visible: false
-      
-      ad_name: 
-        type: oci:identity:availabilitydomain:name
-        required: false
-        title: "Availability Domain"
-        description: "Choose Availability Domain where you want to deploy your solution resources."
-        dependsOn:
-          compartmentId: ${compartment_ocid}
+  db_admin_password:
+    type: password
+    required: true
+    title: "Database Admin password"
+    description: "Type password for admin user in your DB System"
+    minLength: 12
+    maxLength: 30
+    pattern: ^[A-Za-z][A-Za-z0-9_#\$]+$ 
 
-      instance_os: 
-        type: enum
-        required: false
-        default: "Oracle Linux"
-        title: "Operating system"
-        description: "Choose Operating System for your compute instances."
-        enum:
-          - "Oracle Linux"
+  # Optional Configuration
+  ad_number: 
+    type: number
+    required: false
+    visible: false
+  
+  ad_name: 
+    type: oci:identity:availabilitydomain:name
+    required: false
+    title: "Availability Domain"
+    description: "Choose Availability Domain where you want to deploy your solution resources."
+    dependsOn:
+      compartmentId: ${compartment_ocid}
 
-      linux_os_version:
-        type: enum
-        required: false
-        default: "7.8"
-        title: "Operating system version"
-        description: "Choose Operating System version for your compute instances."
-        enum:
-          - "7.8"
+  instance_os: 
+    type: enum
+    required: false
+    default: "Oracle Linux"
+    title: "Operating system"
+    description: "Choose Operating System for your compute instances."
+    enum:
+      - "Oracle Linux"
 
-      instance_shape:
-        type: string
-        required: false
-        default: "VM.Standard2.4"
-        title: "Instance Shape"
-        description: "Choose instance shape for your compute instances."
-        dependsOn:
-          compartmentId: ${compartment_ocid}
+  linux_os_version:
+    type: enum
+    required: false
+    default: "7.8"
+    title: "Operating system version"
+    description: "Choose Operating System version for your compute instances."
+    enum:
+      - "7.8"
 
-      volume_display_name:
-        type: string
-        required: false
-        default: "AppVolume1"
-        title: "Instance Volume Display Name"
-        description: "Type instance volume display Name."
+  instance_shape:
+    type: string
+    required: false
+    default: "VM.Standard2.4"
+    title: "Instance Shape"
+    description: "Choose instance shape for your compute instances."
+    dependsOn:
+      compartmentId: ${compartment_ocid}
 
-      volume_size_in_gbs:
-        type: number
-        required: false
-        default: 100
-        minimum: 50
-        maximum: 32000
-        multipleOf: 1
-        title: "Instance Volume Size (GBs)"
-        description: "Choose instance volume size in gigabytes (min 50GB, Max 32TB)."
+  volume_display_name:
+    type: string
+    required: false
+    default: "AppVolume1"
+    title: "Instance Volume Display Name"
+    description: "Type instance volume display Name."
 
-      volume_count:
-        type: number
-        required: false
-        default: 1
-        minimum: 1
-        maximum: 32
-        multipleOf: 1
-        title: "Instance Volume Count"
-        description: "Choose instance volume count (min 1, max 32)" 
+  volume_size_in_gbs:
+    type: number
+    required: false
+    default: 100
+    minimum: 50
+    maximum: 32000
+    multipleOf: 1
+    title: "Instance Volume Size (GBs)"
+    description: "Choose instance volume size in gigabytes (min 50GB, Max 32TB)."
 
-      volume_attachment_type:
-        type: enum
-        required: false
-        default: "paravirtualized"
-        title: "Instance Volume Attachment Type"
-        description: "Choose instance volume attachment type."
-        enum:
-          - "paravirtualized"
-      
-      db_system_shape:
-        type: enum
-        required: false
-        default: "BM.DenseIO2.52"
-        description: "DB System Shape"
-        description: "Choose the shape for your BareMetal DBSystem."
-        enum:
-          - "BM.DenseIO2.52"
-          - "BM.DenseIO1.36"
-      
-      db_system_cpu_core_count:
-        type: number
-        required: false
-        minimum: 1
-        maximum: 52
-        multipleOf: 1
-        default: 2
-        title: "DB System CPU core count"
-        description: "Choose CPU core count for your BareMetal DBSystem." 
+  volume_count:
+    type: number
+    required: false
+    default: 1
+    minimum: 1
+    maximum: 32
+    multipleOf: 1
+    title: "Instance Volume Count"
+    description: "Choose instance volume count (min 1, max 32)" 
 
-      db_edition:
-        type: enum
-        required: false
-        default: "ENTERPRISE_EDITION"
-        title: "DB Edition"
-        description: "Choose DB Edition for your BareMetal DBSystem." 
-        enum:
-          - "ENTERPRISE_EDITION"
+  volume_attachment_type:
+    type: enum
+    required: false
+    default: "paravirtualized"
+    title: "Instance Volume Attachment Type"
+    description: "Choose instance volume attachment type."
+    enum:
+      - "paravirtualized"
+  
+  db_system_shape:
+    type: enum
+    required: false
+    default: "BM.DenseIO2.52"
+    title: "DB System Shape"
+    description: "Choose the shape for your BareMetal DBSystem."
+    enum:
+      - "BM.DenseIO2.52"
+      - "BM.DenseIO1.36"
+  
+  db_system_cpu_core_count:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 52
+    multipleOf: 1
+    default: 2
+    title: "DB System CPU core count"
+    description: "Choose CPU core count for your BareMetal DBSystem." 
 
-      db_name:
-        type: string
-        required: false
-        default: "aTFdb"
-        description: "Type DB Name for your BareMetal DBSystem." 
-        title: "Database display name"
+  db_edition:
+    type: enum
+    required: false
+    default: "ENTERPRISE_EDITION"
+    title: "DB Edition"
+    description: "Choose DB Edition for your BareMetal DBSystem." 
+    enum:
+      - "ENTERPRISE_EDITION"
 
-      db_version:
-        type: enum
-        required: false
-        default: "12.2.0.1"
-        description: "Choose DB version for your BareMetal DBSystem." 
-        title: "Database version"
-        enum:
-          - "12.2.0.1"
-          - "18c"
-          - "19c"
+  db_name:
+    type: string
+    required: false
+    default: "aTFdb"
+    title: "Database display name"
+    description: "Type DB Name for your BareMetal DBSystem." 
 
-      db_home_display_name:
-        type: string
-        required: false
-        default: "MyTFDBHome"
-        title: "Database home display name." 
-        description: "Type database display for your BareMetal DBSystem."  
+  db_version:
+    type: enum
+    required: false
+    default: "12.2.0.1"
+    title: "Database version"
+    description: "Choose DB version for your BareMetal DBSystem." 
+    enum:
+      - "12.2.0.1"
+      - "18c"
+      - "19c"
 
-      db_disk_redundancy:
-        type: string
-        required: false
-        default: "HIGH"
-        title: "Database disk redundancy"
-        description: "Choose database disk redundancy in your BareMetal DBSystem."        
+  db_home_display_name:
+    type: string
+    required: false
+    default: "MyTFDBHome"
+    title: "Database home display name" 
+    description: "Type database display for your BareMetal DBSystem."  
 
-      db_system_display_name:
-        type: string
-        required: false
-        default: "MyTFDBSystem"
-        title: "DB System display name"
-        description: "Type display name for your BareMetal DBSystem."  
+  db_disk_redundancy:
+    type: string
+    required: false
+    default: "HIGH"
+    title: "Database disk redundancy"
+    description: "Choose database disk redundancy in your BareMetal DBSystem."    
 
-      hostname:
-        type: string
-        required: false
-        default: "myoracledb"
-        title: "DB hostname" 
-        description: "Type DB hostname in your BareMetal DBSystem."  
+  db_system_display_name:
+    type: string
+    required: false
+    default: "MyTFDBSystem"
+    title: "DB System display name"
+    description: "Type display name for your BareMetal DBSystem."  
 
-      host_user_name:
-        type: string
-        required: false
-        visible: false
+  hostname:
+    type: string
+    required: false
+    default: "myoracledb"
+    title: "DB hostname" 
+    description: "Type DB hostname in your BareMetal DBSystem."  
 
-      n_character_set:
-        type: enum
-        required: false
-        default: "AL16UTF16"
-        title: "Database NCharacter set"
-        description: "Choose Database NCharacter set for your BareMetal DBSystem."     
-        enum:
-          - "AL16UTF16"
+  host_user_name:
+    type: string
+    required: false
+    visible: false
 
-      character_set:
-        type: enum
-        required: false
-        default: "AL32UTF8"
-        title: "Database Character set"
-        description: "Choose Database Character set for your BareMetal DBSystem."     
-        enum:
-          - "AL32UTF8"
+  n_character_set:
+    type: enum
+    required: false
+    default: "AL16UTF16"
+    title: "Database NCharacter set"
+    description: "Choose Database NCharacter set for your BareMetal DBSystem." 
+    enum:
+      - "AL16UTF16"
 
-      db_workload:
-        type: enum
-        required: false
-        default: "OLTP"
-        title: "Database workload"
-        description: "Choose Database workload for your BareMetal DBSystem." 
-        enum:
-          - "OLTP"
+  character_set:
+    type: enum
+    required: false
+    default: "AL32UTF8"
+    title: "Database Character set"
+    description: "Choose Database Character set for your BareMetal DBSystem." 
+    enum:
+      - "AL32UTF8"
 
-      pdb_name:
-        type: string
-        required: false
-        default: "pdbName"
-        title: "PDB name"
-        description: "Choose PDB name for your BareMetal DBSystem."
+  db_workload:
+    type: enum
+    required: false
+    default: "OLTP"
+    title: "Database workload"
+    description: "Choose Database workload for your BareMetal DBSystem." 
+    enum:
+      - "OLTP"
 
-      data_storage_size_in_gb:
-        type: number
-        required: false
-        default: 256
-        minimum: 256
-        maximum: 40960
-        multipleOf: 256
-        title: "Database storage size in GB"
-        description: "Choose database storage size in GB for your BareMetal DBSystem."
+  pdb_name:
+    type: string
+    required: false
+    default: "pdbName"
+    title: "PDB name"
+    description: "Choose PDB name for your BareMetal DBSystem."
 
-      license_model:
-        type: enum
-        required: false
-        default: "LICENSE_INCLUDED"
-        title: "Database license model"
-        description: "Choose database license model for your BareMetal DBSystem."
-        enum:
-          - "LICENSE_INCLUDED"
-          - "BRING_YOUR_OWN_LICENSE"
+  data_storage_size_in_gb:
+    type: number
+    required: false
+    default: 256
+    minimum: 256
+    maximum: 40960
+    multipleOf: 256
+    title: "Database storage size in GB"
+    description: "Choose database storage size in GB for your BareMetal DBSystem."
 
-      node_count:
-        type: string
-        required: false
-        default: 1
-        minimum: 1
-        maximum: 1
-        multipleOf: 1
-        title: "Database node count"
-        description: "Choose node numbers for your BareMetal DBSystem."
+  license_model:
+    type: enum
+    required: false
+    default: "LICENSE_INCLUDED"
+    title: "Database license model"
+    description: "Choose database license model for your BareMetal DBSystem."
+    enum:
+      - "LICENSE_INCLUDED"
+      - "BRING_YOUR_OWN_LICENSE"
 
-      data_storage_percentage:
-        type: enum
-        required: false
-        default: "40"
-        title: "Database storage percentage"        
-        description: "Choose database storage percentage for your BareMetal DBSystem."
-        enum: 
-          - "40"
-          - "80"
+  node_count:
+    type: string
+    required: false
+    default: 1
+    minimum: 1
+    maximum: 1
+    multipleOf: 1
+    title: "Database node count"
+    description: "Choose node numbers for your BareMetal DBSystem."
 
-      db_auto_backup_enabled:
-        type: boolean
-        required: false
-        default: true
-        title: "Database Autobackup enabled"
-        description: "Choose if database autobackup will be enabled for your BareMetal DBSystem."
+  data_storage_percentage:
+    type: enum
+    required: false
+    default: "40"
+    title: "Database storage percentage"    
+    description: "Choose database storage percentage for your BareMetal DBSystem."
+    enum: 
+      - "40"
+      - "80"
 
-      db_auto_backup_window:
-        type: enum
-        required: false
-        default: "SLOT_TWO"
-        title: "Database Autobackup window"
-        description: "Choose database autobackup window for your BareMetal DBSystem." 
-        enum:
-          - "SLOT_TWO"       
+  db_auto_backup_enabled:
+    type: boolean
+    required: false
+    default: true
+    title: "Database Autobackup enabled"
+    description: "Choose if database autobackup will be enabled for your BareMetal DBSystem."
 
-      db_recovery_window_in_days:
-        type: enum
-        required: false
-        default: "45"
-        title: "Database Recovery window in days"
-        description: "Choose database recovery window in days for your BareMetal DBSystem." 
-        enum:
-          - "7"
-          - "15"
-          - "30"
-          - "45"
-          - "60"
+  db_auto_backup_window:
+    type: enum
+    required: false
+    default: "SLOT_TWO"
+    title: "Database Autobackup window"
+    description: "Choose database autobackup window for your BareMetal DBSystem." 
+    enum:
+      - "SLOT_TWO"    
 
-    outputs:
-      generated_ssh_private_key:
-        title: "Generated SSH Private Key"
-        displayText: "Generated SSH Private Key"
-        type: string
-        visible: true
+  db_recovery_window_in_days:
+    type: enum
+    required: false
+    default: "45"
+    title: "Database Recovery window in days"
+    description: "Choose database recovery window in days for your BareMetal DBSystem." 
+    enum:
+      - "7"
+      - "15"
+      - "30"
+      - "45"
+      - "60"
+
+outputs:
+  
+  generated_ssh_private_key:
+    title: "Generated SSH Private Key"
+    displayText: "Generated SSH Private Key"
+    type: string
+    visible: true
