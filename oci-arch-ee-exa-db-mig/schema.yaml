@@ -266,7 +266,7 @@ variables:
       - "BRING_YOUR_OWN_LICENSE"
 
   node_count:
-    type: enum
+    type: number
     required: false
     default: 1
     minimum: 1
