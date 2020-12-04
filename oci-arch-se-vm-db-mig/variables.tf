@@ -17,18 +17,6 @@ variable "private_key_path" {}
 variable "region" {
 }
 
-#variable "ssh_public_key" {
-#}
-
-#variable "ssh_private_key" {
-#}
-
-# Specify any Default Value's here
-
-#variable "availability_domain" {
-#  default = "3"
-#}
-
 variable "ad_number" {
   default     = 0
   description = "Which availability domain to deploy to depending on quota, zero based."

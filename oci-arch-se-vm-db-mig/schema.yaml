@@ -1,257 +1,351 @@
 ## Copyright © 2020, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
-    title: "Create compute instance and a Virutal Machine (VM) database system in Oracle Cloud Infrastructure"
-    stackDescription: "This code will help you deploy a compute instance and a Virtual Machine (VM) database system in Oracle Cloud Infrastructure"
-    schemaVersion: 1.1.0
-    version: "20190404"
-    locale: "en"
+title: "Create compute instance and a Virutal Machine (VM) database system in Oracle Cloud Infrastructure"
+stackDescription: "This code will help you deploy a compute instance and a Virtual Machine (VM) database system in Oracle Cloud Infrastructure"
+schemaVersion: 1.1.0
+version: "20190404"
+locale: "en"
 
-    variableGroups:
-    - title: General Configuration
-      visible: false
-      variables:
-      - tenancy_ocid
+variableGroups:
+- title: General Configuration
+  visible: false
+  variables:
+  - tenancy_ocid
 
-    - title: Required Configuration
-      visible: true  
-      variables:
-      - db_admin_password
-      - compartment_ocid
-      - region
+- title: Required Configuration
+  visible: true  
+  variables:
+  - db_admin_password
+  - compartment_ocid
+  - region
 
-    - title: Optional Configuration
-      visible: true
-      variables:      
-      - ad_number
-      - ad_name
-      - instance_os
-      - linux_os_version
-      - instance_shape
-      - volume_display_name
-      - volume_size_in_gbs
-      - volume_count
-      - volume_attachment_type
-      - db_system_shape
-      - db_edition
-      - db_name
-      - db_version
-      - db_home_display_name
-      - db_disk_redundancy
-      - db_system_display_name
-      - hostname
-      - host_user_name
-      - n_character_set
-      - character_set
-      - db_workload
-      - pdb_name
-      - data_storage_size_in_gb
-      - license_model
-      - node_count
-      - data_storage_percentage
-      - db_auto_backup_enabled
-      - db_auto_backup_window
-      - db_recovery_window_in_days
+- title: Optional Configuration
+  visible: true
+  variables:  
+  - ad_number
+  - ad_name
+  - instance_os
+  - linux_os_version
+  - instance_shape
+  - volume_display_name
+  - volume_size_in_gbs
+  - volume_count
+  - volume_attachment_type
+  - db_system_shape
+  - db_edition
+  - db_name
+  - db_version
+  - db_home_display_name
+  - db_disk_redundancy
+  - db_system_display_name
+  - hostname
+  - host_user_name
+  - n_character_set
+  - character_set
+  - db_workload
+  - pdb_name
+  - data_storage_size_in_gb
+  - license_model
+  - node_count
+  - data_storage_percentage
+  - db_auto_backup_enabled
+  - db_auto_backup_window
+  - db_recovery_window_in_days
     
-    variables:
+variables:
 
-      compartment_ocid:
-        type: oci:identity:compartment:id
-        required: true
-        visibile: true
-        title: Compartment
-        description: "Compartment where you want to create the solution resources"
+  # General Configuration
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true
+    visibile: true
+    title: Compartment
+    description: "Compartment where you want to create the solution resources"
 
-      region:
-        type: oci:identity:region:name
-        required: true
-        visibile: true
-        title: Region
-        description: "Region where you want to deploy the resources defined by this stack."
+  region:
+    type: oci:identity:region:name
+    required: true
+    visibile: true
+    title: Region
+    description: "Region where you want to deploy the resources defined by this stack."
 
-      db_admin_password:
-        type: password
-        required: true
-        title: "Database Admin password"
-        description: "Database Admin password."
+  db_admin_password:
+    type: password
+    required: true
+    title: "Database Admin password"
+    description: "Type password for admin user in your Virtual Machine DB System"
+    minLength: 12
+    maxLength: 30
+    pattern: ^[A-Za-z][A-Za-z0-9_#\$]+$ 
 
-      # Optional Configuration
-      ad_number: 
-        type: number
-        required: false
-        default: 0
-        description: "Which availability domain to deploy to depending on quota, zero based."
-      
-      ad_name: 
-        type: oci:identity:availabilitydomain:name
-        required: false
-        description: "Which Availability domain name to deploy."
+  # Optional Configuration
+  ad_number: 
+    type: number
+    required: false
+    visible: false
+  
+  ad_name: 
+    type: oci:identity:availabilitydomain:name
+    required: false
+    title: "Availability Domain"
+    description: "Choose Availability Domain where you want to deploy your solution resources."
+    dependsOn:
+      compartmentId: ${compartment_ocid}
 
-      instance_os: 
-        type: string
-        required: false
-        default: "Oracle Linux"
-        description: "Operating system for compute instances."
+  instance_os: 
+    type: enum
+    required: false
+    default: "Oracle Linux"
+    title: "Operating system"
+    description: "Choose Operating System for your compute instances."
+    enum:
+      - "Oracle Linux"
 
-      linux_os_version:
-        type: string
-        required: false
-        default: "7.8"
-        description: "Operating system version for all Linux instances."
+  linux_os_version:
+    type: enum
+    required: false
+    default: "7.8"
+    title: "Operating system version"
+    description: "Choose Operating System version for your compute instances."
+    enum:
+      - "7.8"
 
-      instance_shape:
-        type: string
-        required: false
-        default: "VM.Standard2.4"
-        description: "Instance Shape."
+  instance_shape:
+    type: oci:core:instanceshape:name
+    required: false
+    default: "VM.Standard2.4"
+    title: "Instance Shape"
+    description: "Choose instance shape for your compute instances."
+    dependsOn:
+      compartmentId: ${compartment_ocid}
 
-      volume_display_name:
-        type: string
-        required: false
-        default: "AppVolume1"
-        description: "Instance volume display name."
+  volume_display_name:
+    type: string
+    required: false
+    default: "AppVolume1"
+    title: "Instance Volume Display Name"
+    description: "Type instance volume display Name."
 
-      volume_size_in_gbs:
-        type: string
-        required: false
-        default: "100"
-        description: "Instance volume size in gigabytes."
+  volume_size_in_gbs:
+    type: number
+    required: false
+    default: 100
+    minimum: 50
+    maximum: 32000
+    multipleOf: 1
+    title: "Instance Volume Size (GBs)"
+    description: "Choose instance volume size in gigabytes (min 50GB, Max 32TB)."
 
-      volume_count:
-        type: number
-        required: false
-        default: 1
-        description: "Instance volume count" 
+  volume_count:
+    type: number
+    required: false
+    default: 1
+    minimum: 1
+    maximum: 32
+    multipleOf: 1
+    title: "Instance Volume Count"
+    description: "Choose instance volume count (min 1, max 32)" 
 
-      volume_attachment_type:
-        type: string
-        required: false
-        default: "paravirtualized"
-        description: "Instance volume attachment type."
-      
-      db_system_shape:
-        type: string
-        required: false
-        default: "VM.Standard2.4"
-        description: "DB System Shape"
+  volume_attachment_type:
+    type: enum
+    required: false
+    default: "paravirtualized"
+    title: "Instance Volume Attachment Type"
+    description: "Choose instance volume attachment type."
+    enum:
+      - "paravirtualized"
+  
+  db_system_shape:
+    type: enum
+    required: false
+    default: "VM.Standard2.4"
+    title: "DB System Shape"
+    description: "Choose the shape for your Virtual Machine DBSystem."
+    enum:
+      - "VM.Standard1.2"
+      - "VM.Standard2.1"
+      - "VM.Standard1.2"
+      - "VM.Standard2.2"
+      - "VM.Standard1.4"
+      - "VM.Standard2.4"
+      - "VM.Standard1.8"
+      - "VM.Standard2.8"
+      - "VM.Standard1.16"
+      - "VM.Standard2.16"
+      - "VM.Standard2.24"    
 
-      db_edition:
-        type: string
-        required: false
-        default: "STANDARD_EDITION"
-        description: "DB Edition"
+  db_edition:
+    type: enum
+    required: false
+    default: "STANDARD_EDITION"
+    title: "DB Edition"
+    description: "Choose DB Edition for your Virtual Machine DBSystem." 
+    enum:
+      - "STANDARD_EDITION"
+      - "ENTERPRISE_EDITION"
 
-      db_name:
-        type: string
-        required: false
-        default: "aTFdb"
-        description: "Database display name."
+  db_name:
+    type: string
+    required: false
+    default: "aTFdb"
+    title: "Database display name"
+    description: "Type DB Name for your Virtual Machine DBSystem." 
 
-      db_version:
-        type: string
-        required: false
-        default: "12.2.0.1"
-        description: "Database version."
+  db_version:
+    type: enum
+    required: false
+    default: "12.2.0.1"
+    title: "Database version"
+    description: "Choose DB version for your Virtual Machine DBSystem." 
+    enum:
+      - "12.2.0.1"
+      - "18c"
+      - "19c"
 
-      db_home_display_name:
-        type: string
-        required: false
-        default: "MyTFDBHome"
-        description: "Database home display name."  
+  db_home_display_name:
+    type: string
+    required: false
+    default: "MyTFDBHome"
+    title: "Database home display name" 
+    description: "Type database display for your Virtual Machine DBSystem."  
 
-      db_disk_redundancy:
-        type: string
-        required: false
-        default: "HIGH"
-        description: "Database disk redundancy."      
+  db_disk_redundancy:
+    type: string
+    required: false
+    default: "HIGH"
+    title: "Database disk redundancy"
+    description: "Choose database disk redundancy in your Virtual Machine DBSystem."   
+    enum:
+      - "HIGH"
+      - "NORMAL"  
 
-      db_system_display_name:
-        type: string
-        required: false
-        default: "MyTFDBSystem"
-        description: "DB System display name." 
+  db_system_display_name:
+    type: string
+    required: false
+    default: "MyTFDBSystem"
+    title: "DB System display name"
+    description: "Type display name for your Virtual Machine DBSystem."  
 
-      hostname:
-        type: string
-        required: false
-        default: "myoracledb"
-        description: "DB hostname" 
+  hostname:
+    type: string
+    required: false
+    default: "myoracledb"
+    title: "DB hostname" 
+    description: "Type DB hostname in your Virtual Machine DBSystem." 
 
-      host_user_name:
-        type: string
-        required: false
-        default: "opc"
-        description: "DB host user name" 
+  host_user_name:
+    type: string
+    required: false
+    visible: false
 
-      n_character_set:
-        type: string
-        required: false
-        default: "AL16UTF16"
-        description: "Database NCharacter set"    
+  n_character_set:
+    type: enum
+    required: false
+    default: "AL16UTF16"
+    title: "Database NCharacter set"
+    description: "Choose Database NCharacter set for your Virtual Machine DBSystem." 
+    enum:
+      - "AL16UTF16"
 
-      character_set:
-        type: string
-        required: false
-        default: "AL32UTF8"
-        description: "Database Character set"
+  character_set:
+    type: enum
+    required: false
+    default: "AL32UTF8"
+    title: "Database Character set"
+    description: "Choose Database Character set for your Virtual Machine DBSystem." 
+    enum:
+      - "AL32UTF8"
 
-      db_workload:
-        type: string
-        required: false
-        default: "OLTP"
-        description: "Database workload"
+  db_workload:
+    type: enum
+    required: false
+    default: "OLTP"
+    title: "Database workload"
+    description: "Choose Database workload for your Virtual Machine DBSystem." 
+    enum:
+      - "OLTP"
 
-      pdb_name:
-        type: string
-        required: false
-        default: "pdbName"
-        description: "PDB name"
+  pdb_name:
+    type: string
+    required: false
+    default: "pdbName"
+    title: "PDB name"
+    description: "Choose PDB name for your Virtual Machine DBSystem."
 
-      data_storage_size_in_gb:
-        type: string
-        required: false
-        default: "256"
-        description: "Database storage size in GB."
+  data_storage_size_in_gb:
+    type: number
+    required: false
+    default: 256
+    minimum: 256
+    maximum: 40960
+    multipleOf: 256
+    title: "Database storage size in GB"
+    description: "Choose database storage size in GB for your Virtual Machine DBSystem."
 
-      license_model:
-        type: string
-        required: false
-        default: "LICENSE_INCLUDED"
-        description: "Database license model"
+  license_model:
+    type: enum
+    required: false
+    default: "LICENSE_INCLUDED"
+    title: "Database license model"
+    description: "Choose database license model for your Virtual Machine DBSystem."
+    enum:
+      - "LICENSE_INCLUDED"
+      - "BRING_YOUR_OWN_LICENSE"
 
-      node_count:
-        type: string
-        required: false
-        default: "1"
-        description: "Database node count (Non-RAC/RAC)"
+  node_count:
+    type: string
+    required: false
+    default: 1
+    minimum: 1
+    maximum: 2
+    multipleOf: 1
+    title: "Database node count"
+    description: "Choose node numbers for your Virtual Machine DBSystem."
 
-      data_storage_percentage:
-        type: string
-        required: false
-        default: "40"
-        description: "Database Storage percentage"        
+  data_storage_percentage:
+    type: enum
+    required: false
+    default: "40"
+    title: "Database storage percentage"    
+    description: "Choose database storage percentage for your Virtual Machine DBSystem."
+    enum: 
+      - "40"
+      - "80"  
 
-      db_auto_backup_enabled:
-        type: string
-        required: false
-        default: "true"
-        description: "Database Autobackup enabled"
+  db_auto_backup_enabled:
+    type: boolean
+    required: false
+    default: true
+    title: "Database Autobackup enabled"
+    description: "Choose if database autobackup will be enabled for your Virtual Machine DBSystem."
 
-      db_auto_backup_window:
-        type: string
-        required: false
-        default: "SLOT_TWO"
-        description: "Database Autobackup window"
+  db_auto_backup_window:
+    type: enum
+    required: false
+    default: "SLOT_TWO"
+    title: "Database Autobackup window"
+    description: "Choose database autobackup window for your Virtual Machine DBSystem." 
+    enum:
+      - "SLOT_TWO" 
 
-      db_recovery_window_in_days:
-        type: string
-        required: false
-        default: "45"
-        description: "Database Recovery window in days"
+  db_recovery_window_in_days:
+    type: enum
+    required: false
+    default: "45"
+    title: "Database Recovery window in days"
+    description: "Choose database recovery window in days for your Virtual Machine DBSystem." 
+    enum:
+      - "7"
+      - "15"
+      - "30"
+      - "45"
+      - "60"
 
-    outputs:
-      generated_ssh_private_key:
-        title: "Generated SSH Private Key"
-        displayText: "Generated SSH Private Key"
-        type: string
-        visible: true
+outputs:
+  
+  generated_ssh_private_key:
+    title: "Generated SSH Private Key"
+    displayText: "Generated SSH Private Key"
+    type: string
+    visible: true
