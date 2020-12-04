@@ -211,7 +211,7 @@ variables:
     description: "Type database display for your Virtual Machine DBSystem."  
 
   db_disk_redundancy:
-    type: string
+    type: enum
     required: false
     default: "HIGH"
     title: "Database disk redundancy"
@@ -294,7 +294,7 @@ variables:
       - "BRING_YOUR_OWN_LICENSE"
 
   node_count:
-    type: string
+    type: enum
     required: false
     default: 1
     minimum: 1
