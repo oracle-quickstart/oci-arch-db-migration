@@ -113,7 +113,7 @@ variables:
       - "7.8"
 
   instance_shape:
-    type: string
+    type: oci:core:instanceshape:name
     required: false
     default: "VM.Standard2.4"
     title: "Instance Shape"
@@ -212,11 +212,14 @@ variables:
     description: "Type database display for your BareMetal DBSystem."  
 
   db_disk_redundancy:
-    type: string
+    type: enum
     required: false
     default: "HIGH"
     title: "Database disk redundancy"
-    description: "Choose database disk redundancy in your BareMetal DBSystem."    
+    description: "Choose database disk redundancy in your BareMetal DBSystem."   
+    enum:
+      - "HIGH"
+      - "NORMAL" 
 
   db_system_display_name:
     type: string
