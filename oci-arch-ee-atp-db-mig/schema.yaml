@@ -12,13 +12,13 @@
       visible: false
       variables:
       - tenancy_ocid
+      - region      
 
     - title: Required Configuration
       visible: true  
       variables:
       - autonomous_database_admin_password
       - compartment_ocid
-      - region
 
     - title: Optional Configuration
       visible: true
