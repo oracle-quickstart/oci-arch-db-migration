@@ -12,13 +12,13 @@ variableGroups:
   visible: false
   variables:
   - tenancy_ocid
+  - region
 
 - title: Required Configuration
   visible: true  
   variables:
   - db_admin_password
   - compartment_ocid
-  - region
 
 - title: Optional Configuration
   visible: true
