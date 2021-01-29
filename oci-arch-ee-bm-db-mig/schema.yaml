@@ -12,13 +12,13 @@ variableGroups:
   visible: false
   variables:
   - tenancy_ocid
+  - region
 
 - title: Required Configuration
   visible: true  
   variables:
   - db_admin_password
   - compartment_ocid
-  - region
 
 - title: Optional Configuration
   visible: true
@@ -196,13 +196,16 @@ variables:
   db_version:
     type: enum
     required: false
-    default: "12.2.0.1"
+    default: "19.0.0.0"
     title: "Database version"
     description: "Choose DB version for your BareMetal DBSystem." 
     enum:
-      - "12.2.0.1"
-      - "18c"
-      - "19c"
+      - "11.2.0.4" 
+      - "12.1.0.2" 
+      - "12.2.0.1" 
+      - "18.0.0.0" 
+      - "19.0.0.0" 
+      - "21.0.0.0"
 
   db_home_display_name:
     type: string
