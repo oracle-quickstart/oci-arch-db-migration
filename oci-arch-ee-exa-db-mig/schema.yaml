@@ -12,13 +12,13 @@ variableGroups:
   visible: false
   variables:
   - tenancy_ocid
+  - region
 
 - title: Required Configuration
   visible: true  
   variables:
   - db_admin_password
   - compartment_ocid
-  - region
 
 - title: Optional Configuration
   visible: true
@@ -137,10 +137,10 @@ variables:
   db_system_cpu_core_count:
     type: number
     required: false
-    minimum: 1
+    minimum: 4
     maximum: 400
     multipleOf: 1
-    default: 2
+    default: 4
     title: "DB System CPU core count"
     description: "Choose CPU core count for your Exadata DBSystem." 
 

@@ -2,18 +2,12 @@
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 # Variables
-variable "tenancy_ocid" {
-}
-
-variable "compartment_ocid" {
-}
-
-variable "user_ocid" {}
-variable "fingerprint" {}
-variable "private_key_path" {}
-
-variable "region" {
-}
+variable "tenancy_ocid" {}
+variable "compartment_ocid" {}
+#variable "user_ocid" {}
+#variable "fingerprint" {}
+#variable "private_key_path" {}
+variable "region" {}
 
 variable "ad_number" {
   default     = 0
