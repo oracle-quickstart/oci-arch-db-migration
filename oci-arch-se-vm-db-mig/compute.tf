@@ -35,19 +35,18 @@ resource "oci_core_instance" "compute_instance1" {
   timeouts {
     create = "60m"
   }
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "oci_core_volume" "CreateVolume" {
-
   availability_domain = local.ad
   compartment_id = var.compartment_ocid
   display_name = var.volume_display_name
   size_in_gbs = var.volume_size_in_gbs
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "oci_core_volume_attachment" "CreateVolumeAttachment" {
-
-   
   count = var.volume_count
   attachment_type = var.volume_attachment_type
   instance_id = oci_core_instance.compute_instance1.id

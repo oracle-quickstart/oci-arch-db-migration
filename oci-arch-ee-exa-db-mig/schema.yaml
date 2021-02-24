@@ -50,6 +50,7 @@ variableGroups:
   - db_auto_backup_enabled
   - db_auto_backup_window
   - db_recovery_window_in_days
+  - release
     
 variables:
 
@@ -313,6 +314,12 @@ variables:
       - "30"
       - "45"
       - "60"
+
+  release:
+    type: string
+    required: false
+    visible: false
+    title: "Reference Architecture Release (OCI Architecture Center)"
 
 outputs:
   

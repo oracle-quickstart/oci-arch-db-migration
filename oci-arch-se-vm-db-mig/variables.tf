@@ -7,7 +7,11 @@ variable "compartment_ocid" {}
 variable "user_ocid" {}
 variable "fingerprint" {}
 variable "private_key_path" {}
-variable "region" {
+variable "region" {}
+
+variable "release" {
+  description = "Reference Architecture Release (OCI Architecture Center)"
+  default     = "1.0"
 }
 
 variable "ad_number" {

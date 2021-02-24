@@ -9,6 +9,11 @@ variable "fingerprint" {}
 variable "private_key_path" {}
 variable "region" {}
 
+variable "release" {
+  description = "Reference Architecture Release (OCI Architecture Center)"
+  default     = "1.0"
+}
+
 variable "ad_number" {
   default     = 0
   description = "Which availability domain to deploy to depending on quota, zero based."

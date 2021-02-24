@@ -29,6 +29,7 @@ resource "oci_database_db_system" "test_db_system1" {
   subnet_id               = oci_core_subnet.subnet_2.id
   ssh_public_keys         = [tls_private_key.public_private_key_pair.public_key_openssh]
   hostname                = var.hostname
+  defined_tags            = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 

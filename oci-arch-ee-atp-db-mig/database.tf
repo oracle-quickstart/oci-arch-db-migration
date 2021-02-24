@@ -16,4 +16,5 @@ resource "oci_database_autonomous_database" "test_autonomous_database" {
     license_model = var.autonomous_database_license_model
     nsg_ids = [oci_core_network_security_group.dbnsg.id]
     subnet_id = oci_core_subnet.subnet_2.id
+    defined_tags          = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }

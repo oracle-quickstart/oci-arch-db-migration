@@ -40,6 +40,7 @@
       - autonomous_database_db_workload
       - autonomous_database_license_model
       - autonomous_database_data_safe_status
+      - release
 
     
     variables:
@@ -212,6 +213,12 @@
         description: "Choose autonomous database DataSafe status" 
         enum:
           - "NOT_REGISTERED"
+          
+      release:
+        type: string
+        required: false
+        visible: false
+        title: "Reference Architecture Release (OCI Architecture Center)"
 
     outputs:
       generated_ssh_private_key:

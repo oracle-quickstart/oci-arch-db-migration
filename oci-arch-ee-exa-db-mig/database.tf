@@ -33,6 +33,7 @@ resource "oci_database_db_system" "test_db_system1" {
   ssh_public_keys         = [tls_private_key.public_private_key_pair.public_key_openssh]
   hostname                = var.hostname
   license_model           = var.license_model
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 

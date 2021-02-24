@@ -39,6 +39,7 @@ resource "oci_core_instance" "compute_instance1" {
   timeouts {
     create = "60m"
   }
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 

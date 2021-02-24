@@ -8,6 +8,7 @@ resource "oci_core_virtual_network" "vcn" {
   compartment_id = var.compartment_ocid
   display_name   = "app-db-vcn"
   dns_label      = "tfexamplevcn"
+  defined_tags   = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 data "oci_core_services" "test_services" {
@@ -24,6 +25,7 @@ resource "oci_core_nat_gateway" "ng" {
   compartment_id = var.compartment_ocid
   display_name   = "nat-gateway"
   vcn_id         = oci_core_virtual_network.vcn.id
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 # Create Service gateway to allow database server access to object storage bucket for backups
@@ -35,6 +37,7 @@ resource "oci_core_service_gateway" "sg" {
   }
   display_name   = "service-gateway"
   vcn_id         = oci_core_virtual_network.vcn.id
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 # Create route table to associate with app server subnet
@@ -47,6 +50,7 @@ resource "oci_core_route_table" "apprt" {
     cidr_block        = "0.0.0.0/0"
     network_entity_id = oci_core_nat_gateway.ng.id
   }
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 # Create route table to connect vcn to internet gateway
@@ -60,6 +64,7 @@ resource "oci_core_route_table" "dbrt" {
     destination_type  = "SERVICE_CIDR_BLOCK"
     network_entity_id = oci_core_service_gateway.sg.id
   }
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 # Create security list to associate with the application server subnet
@@ -93,6 +98,7 @@ resource "oci_core_security_list" "appsl" {
       min = 80
     }
   }
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 # Create security list to associate with database server subnet
@@ -127,6 +133,7 @@ resource "oci_core_security_list" "dbsl" {
       min = 1521
     }
   }
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 # Create regional subnets in vcn
@@ -145,6 +152,7 @@ resource "oci_core_subnet" "subnet_1" {
   provisioner "local-exec" {
     command = "sleep 5"
   }
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "oci_core_subnet" "subnet_2" {
@@ -160,6 +168,7 @@ resource "oci_core_subnet" "subnet_2" {
   provisioner "local-exec" {
     command = "sleep 5"
   }
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 
