@@ -66,6 +66,9 @@ region = "<oci_region>"
 # Compartment
 compartment_ocid = "<compartment_ocid>"
 
+# AD
+availablity_domain_name = "<availablity_domain_name>" # for example GrCH:US-ASHBURN-AD-1
+
 # Autonomous database password
 autonomous_database_admin_password = "<ATP_password>"
 

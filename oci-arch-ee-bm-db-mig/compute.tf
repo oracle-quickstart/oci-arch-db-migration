@@ -3,21 +3,22 @@
 
 # This Terraform script provisions a compute instance
 
-locals {
-  # If ad_number is non-negative use it for AD lookup, else use ad_name.
-  # Allows for use of ad_number in TF deploys, and ad_name in ORM.
-  # Use of max() prevents out of index lookup call.
-  # TODO: update to newer datasource?
-  ad = var.ad_number >= 0 ? data.oci_identity_availability_domains.ads.availability_domains[max(0, var.ad_number)]["name"] : var.ad_name
-
-}
 
 # Create Compute Instance
 resource "oci_core_instance" "compute_instance1" {
-  availability_domain = local.ad
+  availability_domain = var.availablity_domain_name
   compartment_id      = var.compartment_ocid
   display_name        = "App-Server"
   shape               = var.instance_shape
+
+  dynamic "shape_config" {
+    for_each = local.is_flexible_node_shape ? [1] : []
+    content {
+      memory_in_gbs = var.instance_shape_flex_memory
+      ocpus = var.instance_shape_flex_ocpus
+    }
+  }
+
   fault_domain        = "FAULT-DOMAIN-1"
 
   source_details {
@@ -31,9 +32,10 @@ resource "oci_core_instance" "compute_instance1" {
   }
 
   metadata = {
-    ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
+    ssh_authorized_keys = var.ssh_public_key
+    user_data = data.template_cloudinit_config.cloud_init.rendered
   }
-
+  
   timeouts {
     create = "60m"
   }
@@ -42,7 +44,7 @@ resource "oci_core_instance" "compute_instance1" {
 
 
 resource "oci_core_volume" "CreateVolume" {
-  availability_domain = local.ad
+  availability_domain = var.availablity_domain_name
   compartment_id = var.compartment_ocid
   display_name = var.volume_display_name
   size_in_gbs = var.volume_size_in_gbs

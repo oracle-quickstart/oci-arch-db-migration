@@ -3,7 +3,7 @@
 
 
 resource "oci_database_db_system" "test_db_system1" {
-  availability_domain = local.ad
+  availability_domain = var.availablity_domain_name
   compartment_id      = var.compartment_ocid
   cpu_core_count      = var.db_system_cpu_core_count
   database_edition    = var.db_edition
@@ -27,7 +27,7 @@ resource "oci_database_db_system" "test_db_system1" {
 
   shape                   = var.db_system_shape
   subnet_id               = oci_core_subnet.subnet_2.id
-  ssh_public_keys         = [tls_private_key.public_private_key_pair.public_key_openssh]
+  ssh_public_keys         = var.ssh_public_key == "" ? [tls_private_key.public_private_key_pair.public_key_openssh] : [tls_private_key.public_private_key_pair.public_key_openssh, var.ssh_public_key]
   hostname                = var.hostname
   defined_tags            = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }

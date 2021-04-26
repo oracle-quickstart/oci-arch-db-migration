@@ -12,26 +12,39 @@
       visible: false
       variables:
       - tenancy_ocid
-      - region      
+      - region   
+      - release   
 
     - title: Required Configuration
       visible: true  
       variables:
-      - autonomous_database_admin_password
       - compartment_ocid
+      - availablity_domain_name 
+      - autonomous_database_admin_password
+      - autonomous_database_private_endpoint
+      - show_advanced  
 
-    - title: Optional Configuration
-      visible: true
+    - title: Compute Optional Configuration
+      visible: 
+          and:
+            - show_advanced
       variables:      
-      - ad_number
-      - ad_name
+      - ssh_public_key
       - instance_os
       - linux_os_version
       - instance_shape
+      - instance_shape_flex_ocpus
+      - instance_shape_flex_memory
       - volume_display_name
       - volume_size_in_gbs
       - volume_count
       - volume_attachment_type
+
+    - title: Autonomous Database Optional Configuration
+      visible: 
+          and:
+            - show_advanced
+      variables:   
       - autonomous_database_cpu_core_count
       - autonomous_database_db_name
       - autonomous_database_display_name
@@ -40,10 +53,15 @@
       - autonomous_database_db_workload
       - autonomous_database_license_model
       - autonomous_database_data_safe_status
-      - release
-
     
     variables:
+
+      show_advanced:
+        type: boolean
+        title: "Show advanced options?"
+        description: "Shows advanced options."
+        visible: true
+        default: false
 
       compartment_ocid:
         type: oci:identity:compartment:id
@@ -68,19 +86,31 @@
         maxLength: 30
         pattern: ^[A-Za-z][A-Za-z0-9_#\$]+$ 
 
-      # Optional Configuration
-      ad_number: 
-        type: number
-        required: false
-        visible: false
-      
-      ad_name: 
+      autonomous_database_private_endpoint:
+        type: boolean
+        visible: true
+        default: false
+        required: true
+        title: "Autonomous Database Private Endpoint"
+        description: "Check the box to deploy Autonomous Database with Private Endpoint."
+
+      availablity_domain_name:
         type: oci:identity:availabilitydomain:name
-        required: false
-        title: "Availability Domain"
-        description: "Choose Availability Domain where you want to deploy your solution resources."
+        required: true
+        visibile: true
+        title: "Availability Domain to be chosen"
+        description: "Choose Availability Domain where your infrastructure will be deployed."
         dependsOn:
+          regionName: ${region}
           compartmentId: ${compartment_ocid}
+
+      # Optional Configuration
+
+      ssh_public_key:
+        type: oci:core:ssh:publickey
+        title: "Public SSH Key"
+        description: "Choose public SSH Key to be uploaded into compute instances."
+        required: false
 
       instance_os: 
         type: enum
@@ -94,20 +124,59 @@
       linux_os_version:
         type: enum
         required: false
-        default: "7.8"
+        default: "8"
         title: "Operating system version"
         description: "Choose Operating System version for your compute instances."
         enum:
-          - "7.8"
+          - "8"
+          - "7.9"
 
       instance_shape:
         type: oci:core:instanceshape:name
         required: false
-        default: "VM.Standard2.4"
+        default: "VM.Standard.E3.Flex"
         title: "Instance Shape"
         description: "Choose instance shape for your compute instances."
         dependsOn:
           compartmentId: ${compartment_ocid}
+
+      instance_shape_flex_ocpus:
+        type: number
+        required: false
+        minimum: 1
+        maximum: 128
+        multipleOf: 1
+        default: 1
+        title: "Flex Shape OCPUs"
+        description: "Choose number of OCPUs for Flex Shape."
+        visible:
+          and:
+            - or:
+              - eq:
+                - instance_shape 
+                - "VM.Standard.E3.Flex"
+              - eq:
+                - instance_shape 
+                - "VM.Standard.E4.Flex"
+
+      instance_shape_flex_memory:
+        type: number
+        required: false
+        minimum: 1
+        maximum: 128
+        multipleOf: 1
+        default: 10
+        title: "Flex Shape Memory (GB)"
+        description: "Choose number GB for Flex Shape Memory."
+        visible:
+          and:
+            - or:
+              - eq:
+                - instance_shape 
+                - "VM.Standard.E3.Flex"
+              - eq:
+                - instance_shape
+                - "VM.Standard.E4.Flex"
 
       volume_display_name:
         type: string

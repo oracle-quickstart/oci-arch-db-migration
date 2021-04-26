@@ -13,25 +13,37 @@ variableGroups:
   variables:
   - tenancy_ocid
   - region
+  - release
 
 - title: Required Configuration
   visible: true  
   variables:
   - db_admin_password
   - compartment_ocid
+  - availablity_domain_name
+  - show_advanced  
 
-- title: Optional Configuration
-  visible: true
-  variables:  
-  - ad_number
-  - ad_name
+- title: Compute Optional Configuration
+  visible: 
+      and:
+        - show_advanced
+  variables:     
+  - ssh_public_key
   - instance_os
   - linux_os_version
   - instance_shape
+  - instance_shape_flex_ocpus
+  - instance_shape_flex_memory
   - volume_display_name
   - volume_size_in_gbs
   - volume_count
   - volume_attachment_type
+
+- title: DB System Optional Configuration
+  visible: 
+      and:
+        - show_advanced
+  variables: 
   - db_system_shape
   - db_edition
   - db_name
@@ -52,9 +64,15 @@ variableGroups:
   - db_auto_backup_enabled
   - db_auto_backup_window
   - db_recovery_window_in_days
-  - release
     
 variables:
+
+  show_advanced:
+    type: boolean
+    title: "Show advanced options?"
+    description: "Shows advanced options."
+    visible: true
+    default: false
 
   # General Configuration
   compartment_ocid:
@@ -71,6 +89,16 @@ variables:
     title: Region
     description: "Region where you want to deploy the resources defined by this stack."
 
+  availablity_domain_name:
+    type: oci:identity:availabilitydomain:name
+    required: true
+    visibile: true
+    title: "Availability Domain to be chosen"
+    description: "Choose Availability Domain where your infrastructure will be deployed."
+    dependsOn:
+      regionName: ${region}
+      compartmentId: ${compartment_ocid}
+
   db_admin_password:
     type: password
     required: true
@@ -81,18 +109,12 @@ variables:
     pattern: ^[A-Za-z][A-Za-z0-9_#\$]+$ 
 
   # Optional Configuration
-  ad_number: 
-    type: number
+
+  ssh_public_key:
+    type: oci:core:ssh:publickey
+    title: "Public SSH Key"
+    description: "Choose public SSH Key to be uploaded into compute instances."
     required: false
-    visible: false
-  
-  ad_name: 
-    type: oci:identity:availabilitydomain:name
-    required: false
-    title: "Availability Domain"
-    description: "Choose Availability Domain where you want to deploy your solution resources."
-    dependsOn:
-      compartmentId: ${compartment_ocid}
 
   instance_os: 
     type: enum
@@ -106,20 +128,59 @@ variables:
   linux_os_version:
     type: enum
     required: false
-    default: "7.8"
+    default: "8"
     title: "Operating system version"
     description: "Choose Operating System version for your compute instances."
     enum:
-      - "7.8"
+      - "8"
+      - "7.9"
 
   instance_shape:
     type: oci:core:instanceshape:name
     required: false
-    default: "VM.Standard2.4"
+    default: "VM.Standard.E3.Flex"
     title: "Instance Shape"
     description: "Choose instance shape for your compute instances."
     dependsOn:
       compartmentId: ${compartment_ocid}
+
+  instance_shape_flex_ocpus:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 1
+    title: "Flex Shape OCPUs"
+    description: "Choose number of OCPUs for Flex Shape."
+    visible:
+      and:
+        - or:
+          - eq:
+            - instance_shape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - instance_shape 
+            - "VM.Standard.E4.Flex"
+
+  instance_shape_flex_memory:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 10
+    title: "Flex Shape Memory (GB)"
+    description: "Choose number GB for Flex Shape Memory."
+    visible:
+      and:
+        - or:
+          - eq:
+            - instance_shape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - instance_shape
+            - "VM.Standard.E4.Flex"
 
   volume_display_name:
     type: string

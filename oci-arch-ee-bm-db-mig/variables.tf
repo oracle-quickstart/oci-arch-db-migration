@@ -8,19 +8,11 @@ variable "user_ocid" {}
 variable "fingerprint" {}
 variable "private_key_path" {}
 variable "region" {}
+variable "availablity_domain_name" {}
 
 variable "release" {
   description = "Reference Architecture Release (OCI Architecture Center)"
-  default     = "1.0"
-}
-
-variable "ad_number" {
-  default     = 0
-  description = "Which availability domain to deploy to depending on quota, zero based."
-}
-
-variable "ad_name" {
-  default = ""
+  default     = "1.1"
 }
 
 # OS Images
@@ -31,12 +23,23 @@ variable "instance_os" {
 
 variable "linux_os_version" {
   description = "Operating system version for all Linux instances"
-  default     = "7.8"
+  default     = "8"
 }
 
 variable "instance_shape" {
-  description = "Instance Shape"
-  default     = "VM.Standard2.4"
+  default     = "VM.Standard.E3.Flex"
+}
+
+variable "instance_shape_flex_ocpus" {
+    default = 1
+}
+
+variable "instance_shape_flex_memory" {
+    default = 10
+}
+
+variable "ssh_public_key" {
+  default = ""
 }
 
 variable "volume_display_name" {
@@ -140,4 +143,18 @@ variable "db_auto_backup_window" {
 
 variable "db_recovery_window_in_days" {
   default = "45"
+}
+
+
+# Dictionary Locals
+locals {
+  compute_flexible_shapes = [
+    "VM.Standard.E3.Flex",
+    "VM.Standard.E4.Flex"
+  ]
+}
+
+# Checks if is using Flexible Compute Shapes
+locals {
+  is_flexible_node_shape = contains(local.compute_flexible_shapes, var.instance_shape)
 }
