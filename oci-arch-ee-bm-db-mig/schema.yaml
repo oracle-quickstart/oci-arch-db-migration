@@ -252,7 +252,7 @@ variables:
     type: string
     required: false
     default: "aTFdb"
-    title: "Database display name"
+    title: "Database name"
     description: "Type DB Name for your BareMetal DBSystem." 
 
   db_version:
